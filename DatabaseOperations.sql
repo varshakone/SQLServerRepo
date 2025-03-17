@@ -28,3 +28,5 @@ alter database TestDB2 modify name=MarchDB
 -- test databse is exists at location before deletion
 
 drop database If exists TestDB2
+
+--create table
