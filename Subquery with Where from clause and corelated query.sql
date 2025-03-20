@@ -1,0 +1,35 @@
+-- sub query within from clause
+select pname,pprice from (select * from product) as t
+
+
+--sub query within where clause with logical operators
+select avg(pprice) from product
+select pname,pprice from product where pprice >=(select avg(pprice) from product) 
+
+select t.pname,t.pprice from (select * from product) as t
+
+select pname,pprice from product where pprice In(select avg(pprice) from product group by pname)
+
+select avg(pprice),pname from product group by pname
+
+select pname,pprice from product where pprice <= Any(select avg(pprice) from product group by pname)
+
+select pname,pprice from product where pprice <= All(select avg(pprice) from product group by pname)
+
+
+--corelated sub queries
+select * from product
+select * from ProductOrder
+
+
+select  p.pid,p.pname,
+(select count(productid) from ProductOrder where productId= p.pid group by productId )  as Total_Order
+from product as p
+
+--using join
+select p.pid, p.pname, count(o.productid)as Total_Order
+from product as p
+inner join 
+ProductOrder as o
+on p.pid=o.productId
+group by p.pname,p.pid
