@@ -54,4 +54,4 @@ group by p.pname,p.pid
 
 
 -- sub Query to retrieve records from child table - doesn't work bcoz ite returns multiple rows
-select pid, pname,pprice,(select orderDate from ProductOrder where productid=p.pid) from product as p
+select pid, pname,pprice,(select orderDate from ProductOrder ) from product as p
