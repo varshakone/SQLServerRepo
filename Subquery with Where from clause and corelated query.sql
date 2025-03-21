@@ -1,3 +1,5 @@
+
+Use MarchDB
 -- sub query within from clause
 select pname,pprice from (select * from product) as t
 
@@ -12,7 +14,23 @@ select pname,pprice from product where pprice In(select avg(pprice) from product
 
 select avg(pprice),pname from product group by pname
 
+--sub query to find out average price of product and search minimum price
+select avg(pprice) from product group by pname
+select pname,pprice from product where pprice >All(select avg(pprice) from product group by pname)
+select * from product
+
+--join query to find out average price of product and search minimum price
+select avg(pprice) from product group by pname
+select p1.pname,p1.pprice from product as p1
+join
+product as p
+on p.pid =p1.pid
+where p.pprice >= All(select avg(pprice) from product group by pname)
+select * from product
+
+
 select pname,pprice from product where pprice <= Any(select avg(pprice) from product group by pname)
+
 
 select pname,pprice from product where pprice <= All(select avg(pprice) from product group by pname)
 
@@ -33,3 +51,5 @@ inner join
 ProductOrder as o
 on p.pid=o.productId
 group by p.pname,p.pid
+
+select pid, pname,pprice,(select orderDate from ProductOrder where productid=p.pid) from product as p
